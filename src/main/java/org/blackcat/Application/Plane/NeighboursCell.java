@@ -1,6 +1,8 @@
-package org.blackcat.Application;
+package org.blackcat.Application.Plane;
 
 import org.blackcat.Entity.Cell;
+import org.blackcat.Entity.Coordinate;
+import org.blackcat.Entity.Plane;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,12 +25,11 @@ public class NeighboursCell {
     }
 
     private void getNearby() {
-        int x = cell.getX();
-        int y = cell.getY();
+        Coordinate coordinate = cell.getCoordinate();
 
-        meetTopCells(x, y);
-        meetCenterCells(x, y);
-        meetBottomCells(x, y);
+        meetTopCells(coordinate);
+        meetCenterCells(coordinate);
+        meetBottomCells(coordinate);
 
         neighbours.add(cell1);
         neighbours.add(cell2);
@@ -40,7 +41,10 @@ public class NeighboursCell {
         neighbours.add(cell4);
     }
 
-    private void meetTopCells(int x, int y) {
+    private void meetTopCells(Coordinate coordinate) {
+
+        int x = coordinate.getX();
+        int y = coordinate.getY();
 
         if (y == 0) {
             y = this.sides;
@@ -50,31 +54,37 @@ public class NeighboursCell {
         if (x == 0) {
             x1 = this.sides;
         }
-        cell1 = plane.getCellPosXY(x1 - 1, y - 1);
-        cell2 = plane.getCellPosXY(x, y - 1);
+        cell1 = plane.getCellPosXY(new Coordinate(x1 - 1, y - 1));
+        cell2 = plane.getCellPosXY(new Coordinate(x, y - 1));
 
         int x2 = x;
         if (x == (this.sides - 1)) {
             x2 = -1;
         }
-        cell3 = plane.getCellPosXY(x2 + 1, y - 1);
+        cell3 = plane.getCellPosXY(new Coordinate(x2 + 1, y - 1));
     }
 
-    private void meetCenterCells(int x, int y) {
+    private void meetCenterCells(Coordinate coordinate) {
+        int x = coordinate.getX();
+        int y = coordinate.getY();
+
         int x1 = x;
         if (x == 0) {
             x1 = this.sides;
         }
-        cell4 = plane.getCellPosXY(x1 - 1, y);
+        cell4 = plane.getCellPosXY(new Coordinate(x1 - 1, y));
 
         int x2 = x;
         if (x == (this.sides - 1)) {
             x2 = -1;
         }
-        cell5 = plane.getCellPosXY(x2 + 1, y);
+        cell5 = plane.getCellPosXY(new Coordinate(x2 + 1, y));
     }
 
-    private void meetBottomCells(int x, int y) {
+    private void meetBottomCells(Coordinate coordinate) {
+        int x = coordinate.getX();
+        int y = coordinate.getY();
+
         if (y == (this.sides - 1)) {
             y = -1;
         }
@@ -83,15 +93,15 @@ public class NeighboursCell {
         if (x == 0) {
             x1 = this.sides;
         }
-        cell6 = plane.getCellPosXY(x1 - 1, y + 1);
+        cell6 = plane.getCellPosXY(new Coordinate(x1 - 1, y + 1));
 
-        cell7 = plane.getCellPosXY(x, y + 1);
+        cell7 = plane.getCellPosXY(new Coordinate(x, y + 1));
 
         int x2 = x;
         if (x == (this.sides - 1)) {
             x2 = -1;
         }
-        cell8 = plane.getCellPosXY(x2 + 1, y + 1);
+        cell8 = plane.getCellPosXY(new Coordinate(x2 + 1, y + 1));
     }
 
     public List<Cell> getNeighbours() {
@@ -105,19 +115,19 @@ public class NeighboursCell {
         System.out.println(cell6.getState() + "  " + cell7.getState() + "  " + cell8.getState());
     }
 
-    public int numAlive() {
+    public int numNeighboursAlive() {
 
-        int x = 0;
+        int numLives = 0;
 
         Iterator<Cell> itr = neighbours.iterator();
 
         while (itr.hasNext()) {
             Cell cell = itr.next();
             if (cell.getState() == 1) {
-                x++;
+                numLives++;
             }
         }
 
-        return x;
+        return numLives;
     }
 }

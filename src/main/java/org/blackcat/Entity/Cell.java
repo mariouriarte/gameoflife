@@ -1,13 +1,14 @@
 package org.blackcat.Entity;
 import java.util.Random;
 public class Cell {
-    private int x;
-    private int y;
     private int state;
+    private boolean verified = false;
+
+    Coordinate coordinate;
 
     public Cell(int x, int y) {
-        this.x = x;
-        this.y = y;
+
+        coordinate = new Coordinate(x, y);
 
         Random ran = new Random();
         this.state = ran.nextInt(2);
@@ -18,11 +19,15 @@ public class Cell {
     }
 
     public int getX() {
-        return x;
+        return coordinate.getX();
     }
 
     public int getY() {
-        return y;
+        return coordinate.getY();
+    }
+
+    public Coordinate getCoordinate() {
+        return coordinate;
     }
 
     public void kill() {
@@ -31,5 +36,13 @@ public class Cell {
 
     public void aliveAgain() {
         state = 1;
+    }
+
+    public void setVerified(boolean val) {
+        verified = val;
+    }
+
+    public boolean getVerified() {
+        return verified;
     }
 }
