@@ -1,13 +1,12 @@
 package org.blackcat.Entity;
 
 public class Plane {
-    private ListCell linealListCells = new ListCell();
-    private ListAxisCell listAxisCell;
+    private AxisYCell axisYCell;
     private int sides;
 
     public Plane(int sides) {
         this.sides = sides;
-        listAxisCell = new ListAxisCell(sides);
+        axisYCell = new AxisYCell(sides);
         initializeSides();
     }
 
@@ -15,25 +14,24 @@ public class Plane {
         for (int j = 0; j < sides; j++) {
             for (int i = 0; i < sides; i++) {
                 Cell cell = new Cell(i, j);
-                listAxisCell.addCellInCoordinateY(j, cell);
-                linealListCells.add(cell);
+                axisYCell.addCellInCoordinateY(j, cell);
             }
         }
     }
 
     public Cell getCellPosXY(Coordinate coordinate) {
-        return listAxisCell.getCellPosXY(coordinate);
+        return axisYCell.getCellPosXY(coordinate);
     }
 
     public int getSides() {
         return sides;
     }
 
-    public ListCell getLinealListOfCells() {
-        return linealListCells;
+    public AxisXCell getLinealCells() {
+        return axisYCell.getLinealCells();
     }
 
-    public ListAxisCell getListAxisCell() {
-        return listAxisCell;
+    public AxisYCell getListAxisCell() {
+        return axisYCell;
     }
 }

@@ -1,22 +1,21 @@
 package org.blackcat.Application.Plane;
 
 import org.blackcat.Entity.Cell;
-import org.blackcat.Entity.ListAxisCell;
-import org.blackcat.Entity.ListCell;
+import org.blackcat.Entity.AxisYCell;
+import org.blackcat.Entity.AxisXCell;
 import org.blackcat.Entity.Plane;
 
 import java.util.Iterator;
-import java.util.List;
 
 public class PrintPlane {
-    public ListAxisCell axis;
+    public AxisYCell axis;
 
     public PrintPlane(Plane plane) {
         this.axis = plane.getListAxisCell();
     }
 
     public void print() {
-        Iterator<ListCell> itrY = axis.getAxis().iterator();
+        Iterator<AxisXCell> itrY = axis.getAxis().iterator();
 
         while (itrY.hasNext()) {
 
@@ -32,10 +31,10 @@ public class PrintPlane {
     }
 
     private void printState(Cell cell) {
-        char c = 79;
+        String s = "o";
         if (cell.getState() == 0) {
-            c = 45;
+            s = " ";
         }
-        System.out.print(c);
+        System.out.print(s);
     }
 }

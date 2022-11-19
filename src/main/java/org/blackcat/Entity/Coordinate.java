@@ -1,8 +1,8 @@
 package org.blackcat.Entity;
 
 public class Coordinate {
-    int x;
-    int y;
+    final int x;
+    final int y;
 
     public Coordinate(int x, int y) {
         this.x = x;

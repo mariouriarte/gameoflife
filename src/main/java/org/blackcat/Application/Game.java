@@ -1,12 +1,9 @@
 package org.blackcat.Application;
 
+import org.blackcat.Application.Plane.*;
 import org.blackcat.Application.Plane.Exception.NonExistentCellException;
-import org.blackcat.Application.Plane.NeighboursCell;
-import org.blackcat.Application.Plane.PrintPlane;
-import org.blackcat.Application.Plane.SelectRandomUnverifiedCell;
-import org.blackcat.Application.Plane.UnverifiedAllCells;
+import org.blackcat.Entity.AxisXCell;
 import org.blackcat.Entity.Cell;
-import org.blackcat.Entity.Coordinate;
 import org.blackcat.Entity.Plane;
 
 public class Game {
@@ -14,59 +11,59 @@ public class Game {
     int numGenerations;
     int timeSleep;
 
+    RandomUnverifiedCell randomUnverifiedCell;
+
     public Game(Plane plane, int numGenerations, int timeSleep) {
         this.plane = plane;
         this.numGenerations = numGenerations;
         this.timeSleep = timeSleep;
-        ClearConsoleScreen.clear();
+
+        randomUnverifiedCell = new RandomUnverifiedCell(plane);
     }
 
     public void play() {
 
-        print();
-
-        for(int i = 0; i < numGenerations; i++) {
+        for (int i = 0; i < numGenerations; i++) {
 
             try {
-                iterateGenerators();
-            } catch (NonExistentCellException e) {}
-
-            UnverifiedAllCells.unverified(plane);
-        }
-    }
-
-    private void print() {
-        PrintPlane print = new PrintPlane(plane);
-        print.print();
-    }
-
-    private void iterateGenerators() {
-        while (true) {
-            Cell cell = selectUnverifiedRandomCell();
-            evaluateCell(cell);
-
-            try {
-                Thread.sleep(20);
+                Thread.sleep(timeSleep);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            ClearConsoleScreen.clear();
 
-            System.out.println("Game of life");
-            print();
+            try {
+                iterateGenerators();
+            } catch (NonExistentCellException e) {
+            }
+
+            print(i);
+
+            UnverifiedAllCells.unverified(plane);
+            ChangeGenerationCells.evolve(plane);
+        }
+    }
+
+    private void iterateGenerators() {
+
+        while (true) {
+            try {
+                Cell cell = randomUnverifiedCell();
+                evaluateCell(cell);
+            } catch (NonExistentCellException e) {
+                break;
+            }
         }
     }
 
     private void evaluateCell(Cell cell) {
         NeighboursCell neighbours = new NeighboursCell(plane, cell);
-        cell.getCoordinate().print();
 
         if (cell.getState() == 1) {
-            if (neighbours.numNeighboursAlive() >= 2 && neighbours.numNeighboursAlive() <= 3) {
-//                return;
+            if (neighbours.numNeighboursAlive() == 2 || neighbours.numNeighboursAlive() == 3) {
+
             } else if (neighbours.numNeighboursAlive() < 2) {
                 cell.kill();
-            } else if (neighbours.numNeighboursAlive() > 3){
+            } else if (neighbours.numNeighboursAlive() > 3) {
                 cell.kill();
             }
         } else {
@@ -78,8 +75,15 @@ public class Game {
         cell.setVerified(true);
     }
 
-    private Cell selectUnverifiedRandomCell() {
-        SelectRandomUnverifiedCell select = new SelectRandomUnverifiedCell(plane);
-        return select.getCell();
+    private Cell randomUnverifiedCell() {
+        return randomUnverifiedCell.getCell();
+    }
+
+    private void print(int generation) {
+        ClearConsoleScreen.clear();
+        System.out.println("Conway's Game of life, generation: " + generation);
+
+        PrintPlane print = new PrintPlane(plane);
+        print.print();
     }
 }

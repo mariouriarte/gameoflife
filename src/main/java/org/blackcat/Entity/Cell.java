@@ -2,12 +2,12 @@ package org.blackcat.Entity;
 import java.util.Random;
 public class Cell {
     private int state;
+    private int stateNextGeneration;
     private boolean verified = false;
 
-    Coordinate coordinate;
+    final Coordinate coordinate;
 
     public Cell(int x, int y) {
-
         coordinate = new Coordinate(x, y);
 
         Random ran = new Random();
@@ -31,11 +31,11 @@ public class Cell {
     }
 
     public void kill() {
-        state = 0;
+        stateNextGeneration = 0;
     }
 
     public void aliveAgain() {
-        state = 1;
+        stateNextGeneration = 1;
     }
 
     public void setVerified(boolean val) {
@@ -44,5 +44,13 @@ public class Cell {
 
     public boolean getVerified() {
         return verified;
+    }
+
+    public void setStateNextGeneration(int stateNextGeneration) {
+        this.stateNextGeneration = stateNextGeneration;
+    }
+
+    public void changeGeneration() {
+        state = stateNextGeneration;
     }
 }

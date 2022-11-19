@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class ListCell {
+public class AxisXCell {
     List<Cell> list;
 
-    public ListCell() {
+    public AxisXCell() {
         this.list = new ArrayList<Cell>();
     }
 
@@ -26,6 +26,10 @@ public class ListCell {
 
     public void add(Cell cell) {
         list.add(cell);
+    }
+
+    public void addAll(AxisXCell list) {
+        list.addAll(list);
     }
 
     public void remove(Cell cell) {
